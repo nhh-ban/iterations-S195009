@@ -46,11 +46,17 @@ stations_metadata_df <-
 source("functions/data_tests.r")
 test_stations_metadata(stations_metadata)
 
+### 4:  Testing function validity checks
+
+to_iso8601(as_datetime("2016-09-01 10:11:12"),-4)
+to_iso8601(as_datetime("2016-42-01 10:11:12"),-4)
+to_iso8601(as_datetime("2017-03-02 10:11:12"),-99999999999999)
+
 ### 5: Final volume query: 
 
 source("gql-queries/vol_qry.r")
 
-stations_metadata_df %>% 
+stations_metadata %>% 
   filter(latestData > Sys.Date() - days(7)) %>% 
   sample_n(1) %$% 
   vol_qry(

@@ -36,14 +36,10 @@ to_iso8601 <- function(datetime, offset){
   # Check that the converted datetime is not invalid
   if(is.na(offset_datetime)) stop("Your input returned invalid results. Please try again.")
   
-  # Converting to ISO8601 format with "Z" indicating UTC offset
+  # Converting checked values into ISO8601 format
   time <- paste0(anytime::iso8601(offset_datetime), "Z")
   return(time)
 }
-
-to_iso8601(as_datetime("2016-09-01 10:11:12"),-4)
-to_iso8601(as_datetime("2016-42-01 10:11:12"),-4)
-to_iso8601(as_datetime("2017-03-02 10:11:12"),-99999999999999)
 
 transform_volumes <- function(traffic_data) {
   volume_data <- traffic_data$trafficData$volume$byHour$edges
@@ -63,9 +59,9 @@ transform_volumes <- function(traffic_data) {
 
 test <- GQL(
   vol_qry(
-    id=stations_metadata_df$id[1], 
-    from=to_iso8601(stations_metadata_df$latestData[1],-4),
-    to=to_iso8601(stations_metadata_df$latestData[1],0)
+    id=stations_metadata$id[1], 
+    from=to_iso8601(stations_metadata$latestData[1],-4),
+    to=to_iso8601(stations_metadata$latestData[1],0)
   ),
   .url = configs$vegvesen_url
 )
